@@ -1,5 +1,5 @@
 {
-  "name": "ui-component-library",
+  "name": "@erictan100/ui-component-library",
   "version": "0.0.1",
   "description": "This is a React UI component library.",
   "main": "dist/cjs/index.js",

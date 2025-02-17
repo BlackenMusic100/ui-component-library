@@ -1,0 +1,4 @@
+.relative-button {
+    display: flex;
+    position: relative; /* Parent container must be positioned for popper alignment */
+}

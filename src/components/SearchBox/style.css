@@ -1,0 +1,104 @@
+.popper-container {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+}
+
+.popper {
+    position: absolute;
+    top: 100%; /* Adjust to input height */
+    /* left: 0; */
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.popper-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.option:hover {
+    background: #84dd51;
+}
+
+
+.click-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.click-search svg {
+    margin: 0 0.4em;
+}
+
+.option-group {
+    font-weight: 400!important;
+    padding: .5em ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #afafaf;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+
+.searchbox-picker-container {
+    display: flex;
+    position: relative; /* Parent container must be positioned for popper alignment */
+}
+
+.searchbox-loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    pointer-events: none;
+    /* z-index: 9999; Ensure it's above other elements */
+}
+
+.searchbox-spinner {
+    width: 5px;
+    height: 5px;
+    border: 2px solid #ccc;
+    border-top: 2px solid #007bff; /* Primary color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    pointer-events: auto;
+    z-index: 9999;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

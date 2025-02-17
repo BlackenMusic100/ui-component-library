@@ -1,6 +1,6 @@
 {
   "name": "@erictan100/ui-component-library",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This is a React UI component library.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -71,6 +71,7 @@
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "styled-components": ">=6"
   }
 }

@@ -17,3 +17,12 @@
 - Css fix for CalendarWidget to make its container to fit with 2-paged calendar width
 - Css fix for DateRangePicker to make its calendar container to position absolute while being on top of other components
 
+*** 0.0.4v ***
+* Changes
+- When input(fromDate/toDate) in DateRangePicker is null, update to (fromDate/toDate) to null after the CalendarWidget is hidden. css changes are also applied on CalendarWidget
+- Changed CalendarWidget function logic when click on any day
+- Restructure and standardize code structure in CalendarWidget
+* Fix
+- Not found any images (img src reference to non-existing assets) (fix by import ["rollup-plugin-copy"] package)
+- Initial null values in DateRangePicker will not cause error now
+- Fix some css value to not be dynamic, so that other apps with different css config will not have issue

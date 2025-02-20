@@ -2,16 +2,16 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import { DateRangePickerProps } from "./types"
 import CalendarIcon from '../../assets/icons/calendar-icon.svg'
 import { StyledCalendarContainer, StyledCalendarHeader, StyledCalendarIcon, StyledCalendarInputContainer, 
-        StyledCalendarInputHolder, StyledDivider, StyledInputDay, StyledInputDisplayValue, StyledInputLabel, 
+        StyledCalendarInputHolder, StyledCalendarWidgetContainer, StyledDivider, StyledInputDay, StyledInputDisplayValue, StyledInputLabel, 
         StyledInputStyledInputMask, StyledInputText, StyledInputTextMask, StyledTextfieldIconCalendarWrapper, 
         StyledTextfieldInputContent, StyledTextfieldInputContentWrapper, StyledTextfieldInputWrapper, StyledTextfieldWrapper } from "./styled-component"
 import MultiPagedCalendarWidget from "../../widgets/MultiPagedCalendarWidget"
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDateLabel, numberOfMonths, minDate, maxDate }) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onFromDateChange, onToDateChange, startDateLabel, endDateLabel, numberOfMonths, minDate, maxDate }) => {
     const [startDay, setStartDay] = useState('');
     const [endDay, setEndDay] = useState('');
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(fromDate);
+    const [endDate, setEndDate] = useState(toDate);
     const [formattedStartDate, setFormattedStartDate] = useState('');
     const [formattedEndDate, setFormattedEndDate] = useState('');
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -21,21 +21,25 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
     const containerRef = useRef<HTMLDivElement>(null);
     const calendarRef = useRef<HTMLDivElement>(null);
 
+    const formatDate = (date: Date | null) => {
+        if (!date) return "";
+        const targetDate = new Date(date);
+        const dateYear = targetDate.getFullYear();
+        const dateMonth = targetDate.getMonth() + 1;
+        const dateDay = targetDate.getDate();
+
+        const formattedMonth = dateMonth < 10 ? `0${dateMonth}` : dateMonth; 
+        const formattedDay = dateDay < 10 ? `0${dateDay}` : dateDay; 
+
+        return `${formattedDay}/${formattedMonth}/${dateYear}`;
+    };
+
     const initialValues = () => {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        let mm: any = today.getMonth() + 1;
-        let dd: any = today.getDate();
+        const formattedFromDate = formatDate(fromDate);
+        const formattedToDate = formatDate(toDate);
 
-        if (dd < 10) dd = '0' + dd.toString();
-        if (mm < 10) mm = '0' + mm.toString();
-
-        const formattedDate = dd + '/' + mm + '/' + yyyy;
-
-        setStartDate(today);
-        setEndDate(today);
-        setStartDay(getDayOfWeek(formattedDate));
-        setEndDay(getDayOfWeek(formattedDate));
+        setStartDay(getDayOfWeek(formattedFromDate));
+        setEndDay(getDayOfWeek(formattedToDate));
     }
 
     const getDayOfWeek = (dateString: string) => {
@@ -79,7 +83,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
         if (newValue.length < previousValue.length) {
             // If we just deleted a slash, move back one more
             if (previousValue[oldCursorPosition] === '/') {
-                console.log('deleting cursor')
                 return oldCursorPosition - 1;
             }
             return oldCursorPosition;
@@ -107,11 +110,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
         return oldCursorPosition + extraSlashes;
     }
 
-    const handleChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChangeDate = (event: ChangeEvent<HTMLInputElement>, type: 'start' | 'end') => {
         const input = event.target;
         const cursorPosition = input.selectionStart;
         let inputValue = event.target.value;
-        const previousValue = formattedStartDate;
+        const previousValue = type === 'start' ? formattedStartDate : formattedEndDate;
 
         // Handle deletion of slash and previous number
         if (inputValue.length < previousValue.length && cursorPosition !== null) {
@@ -144,8 +147,17 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
         inputDate.getDate() === parseInt(inputDay) &&
         inputDate.getMonth() === parseInt(inputMonth) - 1 &&
         inputDate.getFullYear() === parseInt(inputYear);
-        
-        setFormattedStartDate(inputValue);
+
+        if (type === 'start') {
+            setFormattedStartDate(inputValue);
+            setStartDay(getDayOfWeek(inputValue));
+            onFromDateChange(inputValue);
+        } else {
+            setFormattedEndDate(inputValue);
+            setEndDay(getDayOfWeek(inputValue));
+            onToDateChange(inputValue);
+        }
+
         setTimeout(() => {
             const newCursorPosition = calculateCursorPosition(
                 previousValue,
@@ -157,61 +169,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
         }, 0)
 
         if (isValidDate) {
-            setStartDate(inputDate)
-        }
-    }
-
-    const handleChangeEndDate = (event: ChangeEvent<HTMLInputElement>) => {
-        const input = event.target;
-        const cursorPosition = input.selectionStart;
-        let inputValue = event.target.value;
-        const previousValue = formattedEndDate;
-
-        // Handle deletion of slash and previous number
-        if (inputValue.length < previousValue.length && cursorPosition !== null) {
-            if (previousValue[cursorPosition] === '/' && cursorPosition > 0) {
-                // Remove the slash and the number before it
-                inputValue = previousValue.slice(0, cursorPosition - 1) + previousValue.slice(cursorPosition + 1);
-            }
-        }
-
-        inputValue = inputValue.replace(/[^0-9]/g, '');
-
-        // Store the number of slashes before the cursor in the previous value
-        const slashesBeforeCursor = previousValue
-            .slice(0, cursorPosition ?? 0)
-            .split('/')
-            .length - 1;
-
-        // Auto-format as DD/MM/YYYY
-        if (inputValue.length > 2 && inputValue.length <= 4) {
-            inputValue = `${inputValue.slice(0, 2)}/${inputValue.slice(2)}`;
-        } else if (inputValue.length > 4) {
-            inputValue = `${inputValue.slice(0, 2)}/${inputValue.slice(2, 4)}/${inputValue.slice(4, 8)}`;
-        }
-        
-        const inputDay = inputValue.slice(0,2);
-        const inputMonth = inputValue.slice(3,5);
-        const inputYear = inputValue.slice(6, 10);
-        const inputDate = new Date(parseInt(inputYear), parseInt(inputMonth) - 1, parseInt(inputDay));
-        const isValidDate = !isNaN(inputDate.getTime()) &&
-        inputDate.getDate() === parseInt(inputDay) &&
-        inputDate.getMonth() === parseInt(inputMonth) - 1 &&
-        inputDate.getFullYear() === parseInt(inputYear) 
-        
-        setFormattedEndDate(inputValue);
-        setTimeout(() => {
-            const newCursorPosition = calculateCursorPosition(
-                previousValue,
-                inputValue,
-                cursorPosition ?? 0,
-                slashesBeforeCursor
-            );
-            input.setSelectionRange(newCursorPosition, newCursorPosition);
-        }, 0)
-
-        if (isValidDate) {
-            setEndDate(inputDate)
+            type === 'start' ? setStartDate(inputDate) : setEndDate(inputDate);
         }
     }
 
@@ -241,43 +199,25 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
     }, [handleClickOutsideContainer])
 
     useEffect(() => {
-        if (isCalendarOpen === false) {
+        if (isCalendarOpen === false) { // Remove focus when calendar is closed
             setIsFocusLeft(false);
             setIsFocusRight(false);
         }
     }, [isCalendarOpen])
 
     useEffect(() => {
-        const startYear = startDate.getFullYear();
-        let startMonth: any = startDate.getMonth() + 1;
-        let startDay: any = startDate.getDate();
-
-        if (startDay < 10) startDay = '0' + startDay.toString();
-        if (startMonth < 10) startMonth = '0' + startMonth.toString();
-
-        setFormattedStartDate(startDay + '/' + startMonth + '/' + startYear);
-    }, [startDate])
-    
-    useEffect(() => {
-        if (endDate) {
-            const endYear = endDate.getFullYear();
-            let endMonth: any = endDate.getMonth() + 1;
-            let endDay: any = endDate.getDate();
-    
-            if (endDay < 10) endDay = '0' + endDay.toString();
-            if (endMonth < 10) endMonth = '0' + endMonth.toString();
-    
-            setFormattedEndDate(endDay + '/' + endMonth + '/' + endYear);
+        if (startDate) {
+            const formattedStart = formatDate(startDate);
+            setFormattedStartDate(formattedStart);
+            setStartDay(getDayOfWeek(formattedStart));
         }
-    }, [endDate])
 
-    useEffect(() => {
-        setStartDay(getDayOfWeek(formattedStartDate));
-    }, [formattedStartDate])
-
-    useEffect(() => {
-        setEndDay(getDayOfWeek(formattedEndDate));
-    }, [formattedEndDate])
+        if (endDate) {
+            const formattedEnd = formatDate(endDate);
+            setFormattedEndDate(formattedEnd);
+            setEndDay(getDayOfWeek(formattedEnd));
+        }
+    }, [startDate, endDate])
 
     return (
         <div id="date_picker_range_calendar">
@@ -302,7 +242,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
                                                 </StyledInputDay>
                                                 <StyledInputTextMask tabIndex={-1}></StyledInputTextMask>
                                             </StyledInputDisplayValue>
-                                            <StyledInputStyledInputMask tabIndex={0} placeholder="dd/mm/yyyy" aria-label="Start" value={formattedStartDate} onChange={handleChangeStartDate}/>
+                                            <StyledInputStyledInputMask tabIndex={0} placeholder="dd/mm/yyyy" aria-label="Start" value={formattedStartDate} onChange={(event: ChangeEvent<HTMLInputElement>) => handleChangeDate(event, 'start')}/>
                                         </StyledTextfieldInputContentWrapper>
                                     </StyledTextfieldInputContent>
                                 </StyledTextfieldInputWrapper>
@@ -322,7 +262,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
                                                 </StyledInputDay>
                                                 <StyledInputTextMask tabIndex={-1}></StyledInputTextMask>
                                             </StyledInputDisplayValue>
-                                            <StyledInputStyledInputMask tabIndex={0} placeholder="dd/mm/yyyy" aria-label="End" value={formattedEndDate} onChange={handleChangeEndDate}/>
+                                            <StyledInputStyledInputMask tabIndex={0} placeholder="dd/mm/yyyy" aria-label="End" value={formattedEndDate} onChange={(event: ChangeEvent<HTMLInputElement>) => handleChangeDate(event, 'end')}/>
                                         </StyledTextfieldInputContentWrapper>
                                     </StyledTextfieldInputContent>
                                 </StyledTextfieldInputWrapper>
@@ -333,11 +273,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
             </StyledCalendarContainer>
             {
                 isCalendarOpen &&
-                <div ref={calendarRef}>
+                <StyledCalendarWidgetContainer ref={calendarRef}>
                     <MultiPagedCalendarWidget 
-                        startDate={startDate}
+                        startDate={new Date(startDate)}
                         setStartDate={setStartDate}
-                        endDate={endDate}
+                        endDate={new Date(endDate)}
                         setEndDate={setEndDate}
                         isFocusLeft={isFocusLeft}
                         setIsFocusLeft={setIsFocusLeft}
@@ -347,7 +287,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDateLabel, endDa
                         minDate={minDate}
                         maxDate={maxDate}
                     />
-                </div>
+                </StyledCalendarWidgetContainer>
             }
         </div>
     )

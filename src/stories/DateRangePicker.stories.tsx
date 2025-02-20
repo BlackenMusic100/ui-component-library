@@ -10,9 +10,9 @@ const meta: Meta<DateRangePickerProps> = {
     layout: "centered"
   },
   argTypes: {
-    startDate: {
+    fromDate: {
         control: {
-            type: 'text'
+            type: 'date'
         }
     },
     startDateLabel: {
@@ -20,9 +20,9 @@ const meta: Meta<DateRangePickerProps> = {
         type: 'text'
       }
     },
-    endDate: {
+    toDate: {
         control: {
-            type: 'text'
+            type: 'date'
         }
     },
     endDateLabel: {
@@ -52,21 +52,10 @@ export default meta;
 
 type Story = StoryObj<DateRangePickerProps>
 
-const today = new Date();
-const yyyy = today.getFullYear();
-let mm: any = today.getMonth() + 1;
-let dd: any = today.getDate();
-
-if (dd < 10) dd = '0' + dd.toString();
-if (mm < 10) mm = '0' + mm.toString();
-
-const formattedDate = dd + '/' + mm + '/' + yyyy;
 
 
 export const Primary: Story = {
   args: {
-    startDate: formattedDate,
-    endDate: formattedDate,
     startDateLabel: "Start",
     endDateLabel: "End",
     numberOfMonths: 2,
@@ -80,8 +69,6 @@ export const Primary: Story = {
 
 export const DoublePagedCalendar: Story = {
   args: {
-    startDate: formattedDate,
-    endDate: formattedDate,
     startDateLabel: "Start",
     endDateLabel: "End",
   },

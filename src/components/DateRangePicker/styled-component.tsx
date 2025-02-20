@@ -257,3 +257,12 @@ export const StyledDivider = styled.div<{}>`
     background-color: ${theme?.colors?.primary?.silver|| "rgb(197, 201, 208)"};
     `}
 `
+
+export const StyledCalendarWidgetContainer = styled.div<{}>`
+    ${({}) => `
+    // Base styles
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    `}
+`

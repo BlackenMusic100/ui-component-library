@@ -1,0 +1,19 @@
+* ChangeLog
+
+*** 0.0.1v ***
+- First version of the library
+
+*** 0.0.2v ***
+* Fix
+- Include styled-components in peer dependencies
+
+*** 0.0.3v ***
+* Changes
+- Refactor functions 'handleChangeStartDate' & 'handleChangeEndDate' into 'handleChangeDate'
+- Refactor four useEffect usage into one useEffect usage in DateRangePicker
+- Add new props for DateRangePicker, which are 'fromDate', 'toDate', 'onFromDateChange', and 'onToDateChange'
+* Fix
+- Change from fixed date to date from props in DateRangePicker
+- Css fix for CalendarWidget to make its container to fit with 2-paged calendar width
+- Css fix for DateRangePicker to make its calendar container to position absolute while being on top of other components
+

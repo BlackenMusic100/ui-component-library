@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { MultiPagedCalendarWidgetProps } from "./types";
 import NextPageIcon from '../../assets/icons/icon-next-grey.svg';
 import PreviousPageIcon from '../../assets/icons/icon-prev-grey.svg';
@@ -21,6 +21,21 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
     const [visibleMonths, setVisibleMonths] = useState<Date[]>([]);
     const [slidingDirection, setSlidingDirection] = useState<'left' | 'right' | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(0)
+
+    const calendarRef = useRef<(HTMLDivElement | null)[]>([]);
+
+    useEffect(() => {
+        if (calendarRef.current[0] && calendarRef.current[0].parentElement) {
+            const singlePagedWidth = calendarRef.current[0]?.offsetWidth;
+            const doublePagedWidth = singlePagedWidth * 2;
+            const parentPaddingRight = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).paddingRight);
+            const parentPaddingLeft = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).paddingLeft);
+            const parentGap = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).gap);
+
+            setContainerWidth(doublePagedWidth + parentPaddingLeft + parentPaddingRight + parentGap)
+        }
+    }, [visibleMonths.length]);
 
     // Initialize visible months
     useEffect(() => {
@@ -182,7 +197,6 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
         const targetMonth = type === 'prev' ? getPrevMonthSameDate(month) :
                             type === 'next' ? getNextMonthSameDate(month) :
                             month;
-        
         return (
             <StyledCalendarDays 
                 key={type}
@@ -207,12 +221,12 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
     }
 
     return (
-        <StyledCalendarContainer>
+        <StyledCalendarContainer containerWidth={containerWidth}>
 
             <StyledCalendarsWrapper>
 
-                {visibleMonths.map((month, index) => (
-                    <StyledCalendar key={`${month.getFullYear()}-${month.getMonth()}_${index}`}>
+                {visibleMonths && visibleMonths?.map((month, index) => (
+                    <StyledCalendar ref={(el) => (calendarRef.current[index] = el)} key={`${month.getFullYear()}-${month.getMonth()}_${index}`}>
                         <StyledCalendarHeader>
                             <div>
                                 {month === visibleMonths[0] &&

@@ -1,13 +1,17 @@
 import styled, { css } from "styled-components"
 
 
-export const StyledCalendarContainer = styled.div<{}>`
-    ${({ theme }) => `
+export const StyledCalendarContainer = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['containerWidth'].includes(prop)
+})<{
+    containerWidth: number;
+}>`
+    ${({ theme, containerWidth }) => `
     // Base styles
     display: flex;
     align-items: center;
     gap: ${theme?.sizing?.spacing?.custom(1.6) || "1rem"};
-    max-width: ${theme?.sizing?.spacing?.custom(78.5) || "785px"};
+    max-width: ${`${containerWidth + (theme?.sizing?.spacing?.custom(0.1) || 1)}px` || "785px"};
     border: ${theme?.sizing?.spacing?.custom(0.1) || "1px"} solid #ccc;
     position: relative;
     overflow: auto;
@@ -41,6 +45,7 @@ export const StyledCalendar = styled.div<{}>`
     min-width: ${theme?.sizing?.spacing?.custom(28) || "280px"};
     flex-shrink: 0;
     overflow: hidden;
+    width: fit-content;
     `};
 `;
 

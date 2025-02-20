@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import DateRangePicker from "../components/DateRangePicker/index";
 import { DateRangePickerProps as DateRangePickerProps } from '../components/DateRangePicker/types';
+import { fn } from '@storybook/test';
 
 const meta: Meta<DateRangePickerProps> = {
   title: 'UIComponents/DateRangePicker',
@@ -15,6 +16,9 @@ const meta: Meta<DateRangePickerProps> = {
             type: 'date'
         }
     },
+    onFromDateChange: {
+      description: "Function triggered when fromDate changed with its value in params"
+    },
     startDateLabel: {
       control: {
         type: 'text'
@@ -24,6 +28,9 @@ const meta: Meta<DateRangePickerProps> = {
         control: {
             type: 'date'
         }
+    },
+    onToDateChange: {
+      description: "Function triggered when toDate changed with its value in params"
     },
     endDateLabel: {
       control: {
@@ -59,6 +66,8 @@ export const Primary: Story = {
     startDateLabel: "Start",
     endDateLabel: "End",
     numberOfMonths: 2,
+    onFromDateChange: fn(),
+    onToDateChange: fn(),
   },
   render: ({ ...args }) => {
     return <div>
@@ -71,6 +80,8 @@ export const DoublePagedCalendar: Story = {
   args: {
     startDateLabel: "Start",
     endDateLabel: "End",
+    onFromDateChange: fn(),
+    onToDateChange: fn(),
   },
   render: ({ ...args }) => {
     return <div>

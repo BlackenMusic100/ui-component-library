@@ -10,8 +10,8 @@ import MultiPagedCalendarWidget from "../../widgets/MultiPagedCalendarWidget"
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onFromDateChange, onToDateChange, startDateLabel, endDateLabel, numberOfMonths, minDate, maxDate }) => {
     const [startDay, setStartDay] = useState('');
     const [endDay, setEndDay] = useState('');
-    const [startDate, setStartDate] = useState(fromDate);
-    const [endDate, setEndDate] = useState(toDate);
+    const [startDate, setStartDate] = useState<Date | null>(fromDate);
+    const [endDate, setEndDate] = useState<Date | null>(toDate);
     const [formattedStartDate, setFormattedStartDate] = useState('');
     const [formattedEndDate, setFormattedEndDate] = useState('');
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -178,13 +178,18 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
             calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
             setIsCalendarOpen(false);
             
-            if (startDate > endDate && isFocusLeft) {
-                setStartDate(endDate);
-            } else if (endDate < startDate && isFocusRight) {
-                setEndDate(startDate);
+            if (startDate && endDate) {
+                if (startDate > endDate && isFocusLeft) {
+                    setStartDate(endDate);
+                } else if (endDate < startDate && isFocusRight) {
+                    setEndDate(startDate);
+                }
             }
+
+            if (!formattedStartDate) setStartDate(null);
+            if (!formattedEndDate) setEndDate(null);
         }
-    }, [startDate, endDate])
+    }, [startDate, endDate, formattedStartDate, formattedEndDate])
 
     useEffect(() => {
         initialValues();
@@ -210,12 +215,18 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
             const formattedStart = formatDate(startDate);
             setFormattedStartDate(formattedStart);
             setStartDay(getDayOfWeek(formattedStart));
+        } else {
+            setFormattedStartDate('');
+            setStartDay('');
         }
 
         if (endDate) {
             const formattedEnd = formatDate(endDate);
             setFormattedEndDate(formattedEnd);
             setEndDay(getDayOfWeek(formattedEnd));
+        } else {
+            setFormattedEndDate('');
+            setEndDay('');
         }
     }, [startDate, endDate])
 
@@ -275,9 +286,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
                 isCalendarOpen &&
                 <StyledCalendarWidgetContainer ref={calendarRef}>
                     <MultiPagedCalendarWidget 
-                        startDate={new Date(startDate)}
+                        startDate={startDate ? new Date(startDate) : null}
                         setStartDate={setStartDate}
-                        endDate={new Date(endDate)}
+                        endDate={endDate ? new Date(endDate) : null}
                         setEndDate={setEndDate}
                         isFocusLeft={isFocusLeft}
                         setIsFocusLeft={setIsFocusLeft}

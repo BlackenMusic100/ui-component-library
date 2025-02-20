@@ -25,29 +25,6 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
 
     const calendarRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    useEffect(() => {
-        if (calendarRef.current[0] && calendarRef.current[0].parentElement) {
-            const singlePagedWidth = calendarRef.current[0]?.offsetWidth;
-            const doublePagedWidth = singlePagedWidth * 2;
-            const parentPaddingRight = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).paddingRight);
-            const parentPaddingLeft = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).paddingLeft);
-            const parentGap = parseFloat(window.getComputedStyle(calendarRef.current[0].parentElement).gap);
-
-            setContainerWidth(doublePagedWidth + parentPaddingLeft + parentPaddingRight + parentGap)
-        }
-    }, [visibleMonths.length]);
-
-    // Initialize visible months
-    useEffect(() => {
-        const months = Array.from({ length: numberOfMonths }, (_, index) => {
-            const date = startDate ? new Date(startDate.toString()) : new Date();
-            date.setMonth(date.getMonth() + index);
-            return date;
-        });
-
-        setVisibleMonths(months);
-    }, [numberOfMonths]);
-
     const handleMonthTransition = useCallback((direction: 'left' | 'right') => {
         if (isTransitioning) return;
 
@@ -71,8 +48,9 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
     }, [isTransitioning]);
 
     const generateMonthData = (currentDate: Date) => {
-        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        const targetDate = currentDate.toString() === 'Invalid Date' ? new Date() : currentDate;
+        const firstDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
+        const lastDay = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0);
         const daysInMonth = lastDay.getDate();
         const emptyCells = Array(firstDay.getDay()).fill(null);
         const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -94,11 +72,7 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
         if (minDate && selectedDate < minDate) return;
         if (maxDate && selectedDate > maxDate) return;
 
-        if (!startDate && isFocusLeft) {
-            setStartDate(selectedDate);
-            setEndDate(null);
-            setFocusEndDate();
-        } else if (startDate && isFocusLeft) {
+        if (isFocusLeft) {
             if (selectedDate > endDate!) {
                 setEndDate(null);
             }
@@ -178,7 +152,7 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
         const isInRange = isDateInRange(day, month, year);
         const isStartDate = computeIsStartDate(day, month, year);
         const isEndDate = computeIsEndDate(day, month, year);
-        const isDisabled = minDate && new Date(year, month, day) < minDate || maxDate && new Date(year, month, day) > maxDate
+        const isDisabled = minDate && new Date(year, month, day) < minDate || maxDate && new Date(year, month, day) > maxDate;
         
         return {
             inRange: isInRange,
@@ -187,6 +161,46 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
             disabled: isDisabled
         }
     }
+
+    useEffect(() => {
+        if (calendarRef?.current[0] && calendarRef.current[0].parentElement && calendarRef.current[0].parentElement.parentElement) {
+            const parentEl = calendarRef.current[0].parentElement;
+            const grandParentEl = calendarRef.current[0].parentElement.parentElement;
+
+            const singlePagedWidth = calendarRef.current[0]?.offsetWidth;
+            const doublePagedWidth = singlePagedWidth * 2;
+
+            const computedParentStyles = window.getComputedStyle(parentEl);
+            const computedGrandParentStyles = window.getComputedStyle(grandParentEl);
+
+            const parentPadding = parseFloat(computedParentStyles.paddingLeft) + parseFloat(computedParentStyles.paddingRight);
+            const parentGap = parseFloat(computedParentStyles.gap) || 0;
+
+            const parentBorder = parseFloat(computedGrandParentStyles.border) || 0;
+
+            setContainerWidth(doublePagedWidth + parentPadding + parentGap + parentBorder)
+        }
+    }, [visibleMonths.length]);
+
+    // Initialize visible months
+    useEffect(() => {
+        const months = Array.from({ length: numberOfMonths }, (_, index) => {
+            const date = (!startDate || startDate.toString() === 'Invalid Date') ? new Date() : new Date(startDate.toString());
+            date.setMonth(date.getMonth() + index);
+            return date;
+        });
+
+        setVisibleMonths(months);
+    }, [numberOfMonths]);
+
+    useEffect(() => {
+        console.log('EndDate', endDate);
+
+    }, [endDate])
+    useEffect(() => {
+        console.log('StartDate', startDate);
+
+    }, [startDate])
 
     const TargetMonth = (month: Date, type: string) => {
         // If not doing transition, hide prev and next month

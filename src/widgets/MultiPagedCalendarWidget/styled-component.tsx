@@ -25,6 +25,7 @@ export const StyledCalendarsWrapper = styled.div<{}>`
     gap: ${theme?.sizing?.spacing?.custom(1.6) || "1rem"};
     position: relative;
     padding: ${theme?.sxConfig?.padding(4) || "1rem"};
+    width: fit-content;
     `};
 `;
 
@@ -94,7 +95,7 @@ export const StyledCalendarDays = styled.div.withConfig({
     ${({}) => `
     // Base styles
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 48px);
     grid-template-rows: repeat(6, 1fr);
     gap: 0px;
     opacity: 1;

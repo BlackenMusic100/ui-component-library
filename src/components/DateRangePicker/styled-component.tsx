@@ -50,6 +50,7 @@ export const StyledCalendarInputHolder = styled.div.withConfig({
     // Base styles
     display: inline-flex;
     flex: 1 1 0%;
+    border: 1px solid transparent
     border-radius: ${theme?.sizing?.borderRadius?.sm || "4px"};
     margin-right: 0px;
 
@@ -90,9 +91,7 @@ export const StyledTextfieldInputWrapper = styled.div<{}>`
 export const StyledTextfieldIconCalendarWrapper = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
-    padding-top: ${theme?.sxConfig?.paddingTop(4.5) || "18px"};
     padding-left: ${theme?.sxConfig?.paddingLeft(2) || "8px"};
-    padding-bottom: ${theme?.sxConfig?.paddingTop(4.5) || "18px"};
     `};
 `
 
@@ -101,8 +100,6 @@ export const StyledCalendarIcon = styled.div<{}>`
     // Base styles
     display: block;
     outline: none;
-    height: ${theme?.sxConfig?.height(4) || "1em"};
-    width: ${theme?.sxConfig?.height(4) || "1em"};
     fill: currentcolor;
     color: ${theme?.colors?.text?.primary || "rgb(33, 33, 36)"}
     border-radius: 0px;
@@ -111,7 +108,6 @@ export const StyledCalendarIcon = styled.div<{}>`
     top: 0px;
     right: 0px;
     left: 0px;
-    font-size: ${theme?.typography?.fontSize?.['2xl'] || "1.5rem"};
     user-select: none;
     transition: fill ${theme?.animation?.duration?.faster || "200ms"} ${theme?.animation?.easing?.easeInOut || "cubic-bezier(0.4, 0, 0.2, 1)"} 0ms;
     `}
@@ -120,7 +116,8 @@ export const StyledCalendarIcon = styled.div<{}>`
 export const StyledTextfieldInputContentWrapper = styled.div<{}>`
     ${({}) => `
     // Base styles
-    display: flex
+    display: flex;
+    height: inherit;
     `};
 `
 
@@ -132,6 +129,7 @@ export const StyledTextfieldInputContent = styled.div<{}>`
     flex-direction: column;
     -webkit-box-pack: center;
     justify-content: center;
+    height: inherit;
     `}
 `
 
@@ -157,7 +155,7 @@ export const StyledTextContainer = styled.p<{}>`
     text-decoration: none;
     text-align: initial;
     margin: 0px;
-    line-height: ${theme?.typography?.lineHeight?.normal || "16px"};
+    line-height: 12px;
     opacity: 1;
     width: auto;
     `}
@@ -168,7 +166,7 @@ export const StyledTextfieldInputLabel = styled.p<{}>`
     // Base styles
     height: ${theme?.sxConfig?.height(2.25) || "9px"};
     color: ${theme?.colors?.text?.secondary || "rgb(117, 118, 122)"};
-    line-height: ${theme?.typography?.lineHeight?.normal || "14px"};
+    line-height: 14px;
     margin-bottom: ${theme?.sxConfig?.marginBottom(2.5) || "10px"};
     outline: none;
     top: ${theme?.sizing?.spacing?.custom(0.6) || "6px"};
@@ -190,7 +188,7 @@ export const StyledTextStyle = styled.p<{}>`
     // Base styles
     font-size: ${theme?.typography?.fontSize?.md || "1rem"};
     font-weight: ${theme?.typography?.fontWeight?.regular || 400};
-    line-height: ${theme?.typography?.lineHeight?.relaxed || "20px"};
+    line-height: 20px;
     color: ${theme?.colors?.text?.primary || "rgb(33, 33, 36)"};
     `}
 `
@@ -208,7 +206,7 @@ export const StyledInputDay = styled.div<{}>`
     opacity: 0.5;
     font-size: ${theme?.typography?.fontSize?.xs || "0.75rem"};
     font-family: ${theme?.typography?.fontFamily?.primary || "DM Sans"};
-    margin-top: ${theme?.sxConfig?.marginTop(1) || "4px"};
+    // margin-top: ${theme?.sxConfig?.marginTop(1) || "4px"};
     margin-left: ${theme?.sxConfig?.marginLeft(1) || "4px"};
     `}
 `
@@ -237,9 +235,8 @@ export const StyledInputStyledInputMask = styled.input<{}>`
     white-space: nowrap;
     border: none;
     border-radius: ${theme?.sizing?.borderRadius?.sm || "4px"};
-    height: ${theme?.sizing?.height(11.5) || "46px"};
     font-size: ${theme?.typography?.fontSize?.md || "1rem"};
-    line-height: ${theme?.typography?.lineHeight?.relaxed || "20px"};
+    line-height: 20px;
     background: transparent;
     color: transparent;
     font-family: ${theme?.typography?.fontFamily?.primary || "DM Sans"};

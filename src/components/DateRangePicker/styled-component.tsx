@@ -104,6 +104,8 @@ export const StyledCalendarIcon = styled.div<{}>`
     color: ${theme?.colors?.text?.primary || "rgb(33, 33, 36)"}
     border-radius: 0px;
     padding: 0px;
+    height: 25px;
+    width: 25px;
     position: relative;
     top: 0px;
     right: 0px;
@@ -255,11 +257,19 @@ export const StyledDivider = styled.div<{}>`
     `}
 `
 
-export const StyledCalendarWidgetContainer = styled.div<{}>`
-    ${({}) => `
+export const StyledCalendarWidgetContainer = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['rightEdge'].includes(prop),
+})<{
+    rightEdge: boolean
+}>`
+    ${({ rightEdge }) => `
     // Base styles
     position: absolute;
     z-index: 999;
     background-color: white;
+
+    ${rightEdge && `
+        right: 0
+    `}
     `}
 `

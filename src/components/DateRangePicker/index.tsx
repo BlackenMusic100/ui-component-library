@@ -17,6 +17,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isFocusLeft, setIsFocusLeft] = useState(false);
     const [isFocusRight, setIsFocusRight] = useState(false);
+    const [calendarContainerRightEdge, setCalendarContainerRightEdge] = useState(false)
 
     const containerRef = useRef<HTMLDivElement>(null);
     const calendarRef = useRef<HTMLDivElement>(null);
@@ -151,11 +152,15 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
         if (type === 'start') {
             setFormattedStartDate(inputValue);
             setStartDay(getDayOfWeek(inputValue));
-            onFromDateChange(inputValue);
+            if (inputValue.length < 10) {
+                onFromDateChange(inputValue);
+            }
         } else {
             setFormattedEndDate(inputValue);
             setEndDay(getDayOfWeek(inputValue));
-            onToDateChange(inputValue);
+            if (inputValue.length < 10) {
+                onToDateChange(inputValue);
+            }
         }
 
         setTimeout(() => {
@@ -230,8 +235,35 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
         }
     }, [startDate, endDate])
 
+    useEffect(() => {
+        if (formattedStartDate.length === 10) { // To avoid calling twice onFromDateChange with handleChangeDate()
+            onFromDateChange(formattedStartDate);
+        }
+    }, [formattedStartDate])
+
+    useEffect(() => {
+        if (formattedEndDate.length === 10) { // To avoid calling twice onToDateChange with handleChangeDate()
+            onToDateChange(formattedEndDate);
+        }
+    }, [formattedEndDate])
+
+    window.addEventListener('resize', () => { // Adjust CalendarWidget to end on right edge of DateRangePicker when it will trigger overflow
+        if(isCalendarOpen) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => { // Double RequestAnimationFrame method
+                    const containerRightEdge = calendarRef.current?.getBoundingClientRect().right || 0;
+                    if (containerRightEdge > window.innerWidth ) {
+                        setCalendarContainerRightEdge(true);
+                    } else {
+                        setCalendarContainerRightEdge(false);
+                    }
+                })
+            })
+        }
+    })
+
     return (
-        <div id="date_picker_range_calendar">
+        <div style={{position: 'relative'}} id="date_picker_range_calendar">
             <StyledCalendarContainer ref={containerRef}>
                 <StyledCalendarHeader id="calendar_header">
                     <StyledCalendarInputContainer id="dateinputn">
@@ -284,7 +316,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
             </StyledCalendarContainer>
             {
                 isCalendarOpen &&
-                <StyledCalendarWidgetContainer ref={calendarRef}>
+                <StyledCalendarWidgetContainer ref={calendarRef} rightEdge={calendarContainerRightEdge}>
                     <MultiPagedCalendarWidget 
                         startDate={startDate ? new Date(startDate) : null}
                         setStartDate={setStartDate}

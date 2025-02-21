@@ -21,6 +21,8 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
     const [visibleMonths, setVisibleMonths] = useState<Date[]>([]);
     const [slidingDirection, setSlidingDirection] = useState<'left' | 'right' | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [showPrevMonth, setShowPrevMonth] = useState(false);
+    const [showNextMonth, setShowNextMonth] = useState(false);
     const [containerWidth, setContainerWidth] = useState(0)
 
     const calendarRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -28,11 +30,13 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
     const handleMonthTransition = useCallback((direction: 'left' | 'right') => {
         if (isTransitioning) return;
 
-        setIsTransitioning(true);
+        direction === 'left' ? setShowNextMonth(true) : setShowPrevMonth(true);
         setSlidingDirection(direction);
 
         // Wait for animation to start
         requestAnimationFrame(() => {
+            // Start transition animation
+            setIsTransitioning(true)
             // Update months after a brief delay
             setTimeout(() => {
                 setVisibleMonths(prev => prev.map(date => {
@@ -43,7 +47,9 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
 
                 setSlidingDirection(null);
                 setIsTransitioning(false);
-            }, 300);
+                setShowNextMonth(false);
+                setShowPrevMonth(false);
+            }, 150);
         });
     }, [isTransitioning]);
 
@@ -193,19 +199,10 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
         setVisibleMonths(months);
     }, [numberOfMonths]);
 
-    useEffect(() => {
-        console.log('EndDate', endDate);
-
-    }, [endDate])
-    useEffect(() => {
-        console.log('StartDate', startDate);
-
-    }, [startDate])
-
     const TargetMonth = (month: Date, type: string) => {
         // If not doing transition, hide prev and next month
-        if (type === 'prev' && slidingDirection !== 'right') return null;
-        if (type === 'next' && slidingDirection !== 'left') return null;
+        if (type === 'prev' && !showPrevMonth) return null;
+        if (type === 'next' && !showNextMonth) return null;
 
         const isInitial = type === 'current';
         const targetMonth = type === 'prev' ? getPrevMonthSameDate(month) :

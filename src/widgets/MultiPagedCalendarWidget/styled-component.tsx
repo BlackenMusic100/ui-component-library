@@ -124,7 +124,7 @@ export const StyledSlideEnterLeft = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
     transform: translate(100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     will-change: 'transform';
     `};
 `;
@@ -135,7 +135,7 @@ export const StyledSlideEnterRight = styled.div<{}>`
     position: absolute;
     left: -100%;
     transform: translate(-100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     will-change: 'transform';
     `};
 `;
@@ -144,7 +144,7 @@ export const StyledSlideEnterActiveRight = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
     transform: translate(100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     `};
 `;
 
@@ -152,7 +152,7 @@ export const StyledSlideEnterActive = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
     transform: translate(-100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     `};
 `;
 
@@ -167,7 +167,7 @@ export const StyledSlideExitActiveLeftLeft = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
     transform: translate(-100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     `};
 `;
 
@@ -175,7 +175,7 @@ export const StyledSlideExitActiveLeftRight = styled.div<{}>`
     ${({ theme }) => `
     // Base styles
     transform: translate(100%);
-    transition: transform ${theme?.animation?.duration.normal || "300ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
+    transition: transform ${theme?.animation?.duration.normal || "150ms"} cubic-bezier(0.35, 0.8, 0.4, 1);
     `};
 `;
 

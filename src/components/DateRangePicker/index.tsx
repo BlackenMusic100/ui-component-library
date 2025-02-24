@@ -7,7 +7,7 @@ import { StyledCalendarContainer, StyledCalendarHeader, StyledCalendarIcon, Styl
         StyledTextfieldInputContent, StyledTextfieldInputContentWrapper, StyledTextfieldInputWrapper, StyledTextfieldWrapper } from "./styled-component"
 import MultiPagedCalendarWidget from "../../widgets/MultiPagedCalendarWidget"
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onFromDateChange, onToDateChange, startDateLabel, endDateLabel, numberOfMonths, minDate, maxDate }) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onFromDateChange, onToDateChange, startDateLabel, endDateLabel, numberOfMonths, minDate, maxDate, disabled = false }) => {
     const [startDay, setStartDay] = useState('');
     const [endDay, setEndDay] = useState('');
     const [startDate, setStartDate] = useState<Date | null>(fromDate);
@@ -191,6 +191,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
                 }
             }
 
+            if (startDate && minDate && startDate < minDate) {
+                setStartDate(minDate);
+            } else if (endDate && maxDate && endDate > maxDate) {
+                setEndDate(maxDate);
+            }
+
             if (!formattedStartDate) setStartDate(null);
             if (!formattedEndDate) setEndDate(null);
         }
@@ -264,7 +270,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
 
     return (
         <div style={{position: 'relative'}} id="date_picker_range_calendar">
-            <StyledCalendarContainer ref={containerRef}>
+            <StyledCalendarContainer disabled={disabled} ref={containerRef}>
                 <StyledCalendarHeader id="calendar_header">
                     <StyledCalendarInputContainer id="dateinputn">
                         <StyledCalendarInputHolder isFocus={isFocusLeft} id="startclick-handle" onClick={handleLeftInputClick}>

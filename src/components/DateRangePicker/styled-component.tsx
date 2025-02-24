@@ -1,14 +1,22 @@
 import styled, { css } from "styled-components"
 
 
-export const StyledCalendarContainer = styled.div<{}>`
-    ${({ theme }) => `
+export const StyledCalendarContainer = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['disabled'].includes(prop),
+})<{
+    disabled: boolean
+}>`
+    ${({ theme, disabled }) => `
     // Base styles
     display: inline-block;
     position: relative;
     right: 0px;
     border-radius: ${theme?.sizing?.borderRadius?.xl || "32px"};
     z-index: 2;
+
+    ${disabled && `
+        pointer-events: none;
+    `}
     `};
 `;
 

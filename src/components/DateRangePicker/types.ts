@@ -9,4 +9,5 @@ export type DateRangePickerProps = {
     numberOfMonths: number,
     minDate?: Date,
     maxDate?: Date,
+    disabled?: boolean,
 }

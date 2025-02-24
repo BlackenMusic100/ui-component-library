@@ -47,7 +47,13 @@ const meta: Meta<DateRangePickerProps> = {
         type: 'date'
       }
     },
+    disabled: {
+      control: {
+        type: 'boolean'
+      }
+    },
     numberOfMonths: {
+      description: 'Number of months displayed in popup calendar',
       control: {
         type: 'number'
       }

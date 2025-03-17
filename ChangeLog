@@ -27,7 +27,7 @@
 - Initial null values in DateRangePicker will not cause error now
 - Fix some css value to not be dynamic, so that other apps with different css config will not have issue
 
-*** 0.0.5v ***
+*** 0.0.6v ***
 * Features 
 - When zoomed in or out will recalculate if the CalendarWidget popup from DateRangePicker will overflow out of the browser, if it is make the right edge of CalendarWidget ends on DateRangePicker right edge
 - Add in onDateRange for both fromDate and toDate so that application could observe the changes in the DateRangePicker

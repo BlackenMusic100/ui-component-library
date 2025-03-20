@@ -58,7 +58,7 @@ export const StyledCalendarInputHolder = styled.div.withConfig({
     // Base styles
     display: inline-flex;
     flex: 1 1 0%;
-    border: 1px solid transparent
+    border: 1px solid transparent;
     border-radius: ${theme?.sizing?.borderRadius?.sm || "4px"};
     margin-right: 0px;
 

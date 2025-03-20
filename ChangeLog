@@ -35,3 +35,7 @@
 * Changes
 - Smoother transition when changing CalendarWidget from month to month
 - Constant width and height for Calendar Icon in DateRangePicker
+
+*** 0.0.7v ***
+* Fixes
+- StyledCalendarInputHolder css fix

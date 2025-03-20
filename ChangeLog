@@ -37,5 +37,7 @@
 - Constant width and height for Calendar Icon in DateRangePicker
 
 *** 0.0.7v ***
+* Features
+- Added in Universal Module Definition (UMD) for the library to be used in various environments, fallback for cases that ESM does not work.
 * Fixes
 - StyledCalendarInputHolder css fix

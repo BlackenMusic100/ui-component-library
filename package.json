@@ -4,6 +4,7 @@
   "description": "This is a React UI component library.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "universalModuleDefinition": "dist/umd/UIComponentLibrary.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

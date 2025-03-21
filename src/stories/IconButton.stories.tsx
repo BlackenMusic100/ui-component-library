@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
-import SearchIcon from '../assets/icons/search-icon-white.svg'
+import SearchIcon from '../assets/icons/search-icon-white'
 import IconButton from "../components/IconButton/index";
 import { IconButtonProps } from '../components/IconButton/types';
 

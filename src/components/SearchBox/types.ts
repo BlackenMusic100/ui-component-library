@@ -6,7 +6,7 @@ export type SearchBoxProps = {
     input: React.InputHTMLAttributes<HTMLInputElement>,
     button: React.ButtonHTMLAttributes<HTMLButtonElement>,
     hasButtonContent: boolean, 
-    buttonIcon: string, 
+    buttonIcon: object, 
     buttonText: string,
     buttonPosition: 'Left' | 'Right' | null,
     isLoading: boolean,

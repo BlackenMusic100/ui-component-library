@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import { DateRangePickerProps } from "./types"
-import CalendarIcon from '../../assets/icons/calendar-icon.svg'
+import CalendarIcon from '../../assets/icons/calendar-icon'
 import { StyledCalendarContainer, StyledCalendarHeader, StyledCalendarIcon, StyledCalendarInputContainer, 
         StyledCalendarInputHolder, StyledCalendarWidgetContainer, StyledDivider, StyledInputDay, StyledInputDisplayValue, StyledInputLabel, 
         StyledInputStyledInputMask, StyledInputText, StyledInputTextMask, StyledTextfieldIconCalendarWrapper, 
@@ -278,7 +278,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ fromDate, toDate, onF
                                 <StyledTextfieldInputWrapper>
                                     <StyledTextfieldIconCalendarWrapper>
                                         <StyledCalendarIcon>
-                                            <img src={CalendarIcon} />
+                                            <CalendarIcon />
                                         </StyledCalendarIcon>
                                     </StyledTextfieldIconCalendarWrapper>
                                     <StyledTextfieldInputContent>

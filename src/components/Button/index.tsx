@@ -1,5 +1,5 @@
 import { ButtonProps } from "./types"
-import loader from "../../assets/icons/icon-loader.svg"
+import LoaderIcon from "../../assets/icons/icon-loader"
 import StyledButton from "./styled-component"
 
 
@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({ button, text, isLoading, variant = 'pri
                 disabled={isLoading || button?.disabled || false}
             >
                 {isLoading ?
-                    <img src={loader} />
+                    <LoaderIcon />
                     :
                     <div>
                         {text ? text : <></>}

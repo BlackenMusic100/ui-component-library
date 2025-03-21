@@ -1,5 +1,5 @@
 export type IconButtonProps = {
-    icon: string,
+    icon: object,
     isLoading?: boolean,
     button: React.ButtonHTMLAttributes<HTMLButtonElement>,
 }

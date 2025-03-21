@@ -41,3 +41,10 @@
 - Added in Universal Module Definition (UMD) for the library to be used in various environments, fallback for cases that ESM does not work.
 * Fixes
 - StyledCalendarInputHolder css fix
+
+*** 0.0.8v ***
+* Features
+- UMD is completed
+- Lower styled-components peer-dependency
+* Changes
+- Change SVGs into component 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { MultiPagedCalendarWidgetProps } from "./types";
-import NextPageIcon from '../../assets/icons/icon-next-grey.svg';
-import PreviousPageIcon from '../../assets/icons/icon-prev-grey.svg';
+import NextPageIcon from '../../assets/icons/icon-next-grey';
+import PreviousPageIcon from '../../assets/icons/icon-prev-grey';
 import { StyledCalendar, StyledCalendarButton, StyledCalendarContainer, StyledCalendarDay, StyledCalendarDays, StyledCalendarHeader, StyledCalendarsWrapper, StyledCalendarWeekdays, StyledContainer, StyledContainerWrapper, StyledEmptyCalendarDay } from "./styled-component";
 
 const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
@@ -245,7 +245,7 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
                                         onClick={handlePrevMonth}
                                         disabled={minDate && visibleMonths[0]! <= minDate}
                                     >
-                                        <img src={PreviousPageIcon} alt="Previous" />
+                                        <PreviousPageIcon />
                                     </StyledCalendarButton>}
                             </div>
                             <h3>
@@ -257,7 +257,7 @@ const MultiPagedCalendarWidget: React.FC<MultiPagedCalendarWidgetProps> = ({
                                         onClick={handleNextMonth}
                                         disabled={maxDate && visibleMonths[visibleMonths.length - 1]! >= maxDate}
                                     >
-                                        <img src={NextPageIcon} alt="Next" />
+                                        <NextPageIcon />
                                     </StyledCalendarButton>}
                             </div>
                         </StyledCalendarHeader>

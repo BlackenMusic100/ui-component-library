@@ -1,3 +1,4 @@
+const XCircleIcon = () => (
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
   <g id="Group_10799" data-name="Group 10799" transform="translate(-11545.038 -6458)">
     <path id="Path_10253" data-name="Path 10253" d="M892,1677a11,11,0,1,1-11,11A11.012,11.012,0,0,1,892,1677Zm0,20a9,9,0,1,0-9-9A9.01,9.01,0,0,0,892,1697Z" transform="translate(10664.038 4781)" fill="#e13247"/>
@@ -7,3 +8,6 @@
     </g>
   </g>
 </svg>
+)
+
+export default XCircleIcon

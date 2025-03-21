@@ -1,9 +1,9 @@
 import { PaginationProps } from "./types"
 import React, { useEffect, useState } from 'react'
-import FirstPageIcon from '../../assets/icons/icon-firstpage-grey.svg'
-import LastPageIcon from '../../assets/icons/icon-lastpage-grey.svg'
-import NextPageIcon from '../../assets/icons/icon-next-grey.svg'
-import PreviousPageIcon from '../../assets/icons/icon-prev-grey.svg'
+import FirstPageIcon from '../../assets/icons/icon-firstpage-grey'
+import LastPageIcon from '../../assets/icons/icon-lastpage-grey'
+import NextPageIcon from '../../assets/icons/icon-next-grey'
+import PreviousPageIcon from '../../assets/icons/icon-prev-grey'
 
 const Button: React.FC<PaginationProps> = ({ ...props }) => {  
     const handlePaginationClick = props.onPaginationClick
